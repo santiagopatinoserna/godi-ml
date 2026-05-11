@@ -41,6 +41,9 @@ dmypy.json
 venv/
 env/
 
+# uv lock file (CI keys cache on pyproject.toml, lock not committed)
+uv.lock
+
 # IDE
 .vscode/
 .idea/

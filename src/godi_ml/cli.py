@@ -75,8 +75,7 @@ def churn(
     for row in leaderboard:
         marker = "← best" if row["is_best"] else ""
         console.print(
-            f"  {row['model']:25s}  AUC={row['auc_roc']:.3f}  "
-            f"Brier={row['brier']:.3f}  {marker}"
+            f"  {row['model']:25s}  AUC={row['auc_roc']:.3f}  Brier={row['brier']:.3f}  {marker}"
         )
 
     console.print(f"\n[green]✓ Report:[/green] {output_dir}/metrics.json")

@@ -25,7 +25,7 @@ class DataLoader:
         suffix = path.suffix.lower()
         if suffix not in self.SUPPORTED_SUFFIXES:
             raise LoaderError(
-                f"unsupported file format {suffix!r} " f"(supported: {self.SUPPORTED_SUFFIXES})"
+                f"unsupported file format {suffix!r} (supported: {self.SUPPORTED_SUFFIXES})"
             )
 
         df = pd.read_csv(path) if suffix == ".csv" else pd.read_parquet(path)
