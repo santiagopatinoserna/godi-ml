@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test py${{ matrix.python }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install libomp (macOS — required by LightGBM)
+        if: runner.os == 'macOS'
+        run: brew install libomp
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python }}
+        run: uv python install ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          uv venv --python ${{ matrix.python }}
+          uv pip install -e ".[dev]"
+
+      - name: Lint (ruff)
+        run: uv run ruff check src tests
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check src tests
+
+      - name: Type check (mypy)
+        run: uv run mypy src
+
+      - name: Unit tests with coverage
+        run: uv run pytest --cov=src/godi_ml --cov-report=xml -m "not integration"
+
+      - name: Integration tests
+        run: uv run pytest -m integration
+
+      - name: Upload coverage (Linux + 3.11 only)
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.11'
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+        continue-on-error: true
