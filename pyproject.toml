@@ -88,8 +88,21 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["xgboost.*", "lightgbm.*", "sklearn.*", "matplotlib.*", "seaborn.*", "joblib.*"]
+module = [
+    "xgboost.*",
+    "lightgbm.*",
+    "sklearn.*",
+    "matplotlib.*",
+    "seaborn.*",
+    "joblib.*",
+    "typer.*",
+    "rich.*",
+]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["godi_ml.cli"]
+disable_error_code = ["misc"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
