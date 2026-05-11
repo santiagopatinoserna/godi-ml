@@ -74,6 +74,7 @@ ignore = ["E501"]
 [tool.ruff.lint.per-file-ignores]
 # Capital X (feature matrix) and y (target) are sklearn convention
 "src/godi_ml/pipeline/*.py" = ["N803", "N806"]
+"src/godi_ml/tasks/*.py" = ["N803", "N806"]
 "tests/unit/*.py" = ["N803", "N806"]
 
 [tool.ruff.format]
