@@ -1,5 +1,6 @@
 """Tests for godi_ml.cli."""
 
+import re
 from pathlib import Path
 
 import numpy as np
@@ -10,6 +11,14 @@ from typer.testing import CliRunner
 from godi_ml.cli import app
 
 runner = CliRunner()
+
+# Rich injects ANSI escapes + may split tokens across them under narrow terminals.
+# Strip them to compare against literal option names.
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def _strip_ansi(text: str) -> str:
+    return _ANSI_RE.sub("", text)
 
 
 @pytest.fixture
@@ -31,14 +40,15 @@ def synthetic_csv(tmp_path: Path) -> Path:
 def test_cli_help() -> None:
     result = runner.invoke(app, ["--help"])
     assert result.exit_code == 0
-    assert "godi-ml" in result.stdout.lower()
+    assert "godi-ml" in _strip_ansi(result.stdout).lower()
 
 
 def test_cli_churn_command_help() -> None:
     result = runner.invoke(app, ["churn", "--help"])
     assert result.exit_code == 0
-    assert "--data" in result.stdout
-    assert "--target" in result.stdout
+    clean = _strip_ansi(result.stdout)
+    assert "--data" in clean
+    assert "--target" in clean
 
 
 def test_cli_churn_runs_e2e(synthetic_csv: Path, tmp_path: Path) -> None:
@@ -68,4 +78,5 @@ def test_cli_churn_missing_target(tmp_path: Path) -> None:
     pd.DataFrame({"a": [1], "b": [2]}).to_csv(csv, index=False)
     result = runner.invoke(app, ["churn", "--data", str(csv), "--target", "missing"])
     assert result.exit_code != 0
-    assert "missing" in result.stdout.lower() or "not found" in result.stdout.lower()
+    clean = _strip_ansi(result.stdout).lower()
+    assert "missing" in clean or "not found" in clean
