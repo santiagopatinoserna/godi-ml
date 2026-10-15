@@ -1,3 +1,3 @@
-"""godi-ml: ML quality assurance via LLM sub-agents."""
+"""godi-ml: reproducible evaluation pipeline for binary classifiers."""
 
 __version__ = "0.1.0a1"

@@ -1,14 +1,14 @@
 [project]
 name = "godi-ml"
 version = "0.1.0a1"
-description = "ML quality assurance via LLM sub-agents — catch what AutoML doesn't catch"
+description = "Reproducible evaluation pipeline for binary classifiers: model comparison, calibration and a versioned report"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [
     { name = "Santiago Patino Serna", email = "santiagopatinoserna@godi.ai" },
 ]
-keywords = ["machine-learning", "automl", "data-leakage", "model-evaluation", "llm-agents"]
+keywords = ["machine-learning", "model-evaluation", "calibration", "classification", "reproducibility"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",

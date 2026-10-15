@@ -14,7 +14,7 @@ from godi_ml.tasks.churn import ChurnRecipe
 
 app = typer.Typer(
     name="godi-ml",
-    help="ML quality assurance via LLM sub-agents — catch what AutoML doesn't catch.",
+    help="Reproducible evaluation pipeline for binary classifiers.",
     no_args_is_help=True,
 )
 console = Console()
